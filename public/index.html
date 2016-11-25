@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CrowdMapper</title>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/main.css">
+</head>
+<body>
+  <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+    <a class="navbar-brand" href="#">CrowdMapper</a>
+  </nav>
+
+  <div id="main-container" class="container">
+    <div id="basic-map"></div>
+  </div>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8ZOgfErAkO_Gd1xGCZsp06EGnWXeZk1o&libraries=visualization"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.auto.min.js"></script>
+
+  <script type="text/javascript" src="/main.js"></script>
+  <script type="text/javascript">
+    var crowdMapper = new CrowdMapper();
+    crowdMapper.intiateBasicMap(document.getElementById('basic-map'))
+      
+    crowdMapper.getLocations().then(function() {
+      console.log("Locations Fetched");
+      // crowdMapper.generateHeatMap();
+      crowdMapper.placeLocationMarkers();
+    }).catch(function(err) { console.log(err); });
+  </script>
+</body>
+</html>
