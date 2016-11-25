@@ -65,16 +65,17 @@
   }
 
   CrowdMapper.prototype.generateHeatMap = function() {
+    var self = this;
     var data = [];
-    this.locations.forEach(function(location) {
+    self.locations.forEach(function(location) {
       var latLng = new google.maps.LatLng(location.lat, location.long);
       data.push(latLng);
     });
 
-    this.heatMap = new google.maps.visualization.HeatmapLayer({
+    self.heatMap = new google.maps.visualization.HeatmapLayer({
       data: data,
       dissipating: false,
-      map: this.map
+      map: self.map
     });
   };
 
