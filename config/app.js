@@ -21,6 +21,27 @@ const configure = (app) => {
 
   app.post('/monitor/poll', (req, res) => {
     console.log(req.body);
+    let body = req.body;
+    let reqArgs = ["device_id", "device_type", "device_name"];
+    let values = [];
+
+    reqArgs.forEach((arg) => {
+      if(req.body[arg]) values.push(req.body[arg]);
+      else return res.sendStatus(400);
+    });
+
+    var now = (new Date()).getTime();
+    values.push(now);
+    values.push(now);
+
+    let qry = "INSERT INTO devices (device_id, device_type, device_name, last_seen) VALUES (?,?,?,?)\
+              ON DUPLICATE KEY UPDATE last_seen=?;"
+
+    database.query(qry, values).then((resp) => {
+      res.sendStatus(200);
+    }).catch((err) => {
+      console.error(err);
+    })
   });
 
 
