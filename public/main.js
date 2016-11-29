@@ -7,7 +7,7 @@
 
   CrowdMapper.prototype.intiateBasicMap = function(targetElement) {
     this.map = new google.maps.Map(targetElement, {
-      center: { lat: -34.397, lng: 150.644 },
+      center: { lat: 42.390238, lng: -72.524853 },
       zoom: 3
     });
 

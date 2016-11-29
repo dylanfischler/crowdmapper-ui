@@ -19,6 +19,11 @@ const configure = (app) => {
     })
   });
 
+  app.post('/monitor/poll', (req, res) => {
+    console.log(req.body);
+  });
+
+
   app.use('/', express.static('public'));
   return app;
 }
