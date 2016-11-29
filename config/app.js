@@ -27,21 +27,23 @@ const configure = (app) => {
 
     reqArgs.forEach((arg) => {
       if(req.body[arg]) values.push(req.body[arg]);
-      else return res.sendStatus(400);
     });
 
-    var now = (new Date()).getTime();
-    values.push(now);
-    values.push(now);
+    if(values.length !== reqArgs.length) return res.sendStatus(400);
+    else {
+      var now = (new Date()).getTime();
+      values.push(now);
+      values.push(now);
 
-    let qry = "INSERT INTO devices (device_id, device_type, device_name, last_seen) VALUES (?,?,?,?)\
-              ON DUPLICATE KEY UPDATE last_seen=?;"
+      let qry = "INSERT INTO devices (device_id, device_type, device_name, last_seen) VALUES (?,?,?,?)\
+                ON DUPLICATE KEY UPDATE last_seen=?;"
 
-    database.query(qry, values).then((resp) => {
-      res.sendStatus(200);
-    }).catch((err) => {
-      console.error(err);
-    })
+      database.query(qry, values).then((resp) => {
+        res.sendStatus(200);
+      }).catch((err) => {
+        console.error(err);
+      })
+    }
   });
 
 
