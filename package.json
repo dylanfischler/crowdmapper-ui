@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "background": "forever --uid crowdmapperui start index.js ",
-    "restart": "forever restart crowdmapperui",
+    "background": "forever start index.js ",
+    "restart": "forever restart 0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
