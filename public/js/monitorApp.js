@@ -1,36 +1,3 @@
-// var deviceMonitor = new DeviceMonitor();
-
-
-// deviceMonitor.refresh().then(function() {
-  
-// }).catch(function(err) {
-//   console.error(err);
-// })
-
-
-// window.MonitorApp = React.createClass({
-//   initialState: 
-//   getDevices: function() {
-//     var self = this;
-
-//     axios.get('/monitor').then(function(response) {
-//      self.setState({ devices: response })
-//     }).catch(function(error) {
-//       console.error(error);
-//     });
-//   },
-//   render: function() {
-//     return (
-//       <div>
-//         <h2>Devices</h2>
-//       </div>
-//     )
-//   },
-//   componentDidMount: function() {
-//     deviceMonitor
-//   }
-// });
-
 class MonitorApp extends React.Component {
   constructor(props) {
     super(props);
@@ -89,8 +56,7 @@ class Device extends React.Component {
     let target = document.getElementById(`map-${this.props.device_id}`);
     this.map = new google.maps.Map(target, {
       center: { lat: this.props.last_lat, lng: this.props.last_long },
-      zoom: 12,
-      draggable: false
+      zoom: 16
     });
 
     var latLng = new google.maps.LatLng(this.props.last_lat, this.props.last_long);
