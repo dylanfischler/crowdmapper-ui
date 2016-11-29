@@ -2,6 +2,11 @@
   margin-top: 20px;
 }
 
+.devices h6 {
+  font-size: 13px;
+  color: #929292;
+}
+
 .device .card-header {
   padding: 0px;
 }
@@ -11,10 +16,10 @@
   height: 100px;
 }
 
-.device .last-seen {
+/*.device .last-seen {
   font-size: 13px;
   color: #929292;
-}
+}*/
 
 .device .card-title {
   display: flex;

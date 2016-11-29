@@ -36,13 +36,14 @@ class MonitorApp extends React.Component {
     super(props);
 
     this.state = {
-      devices: []
+      devices: [],
+      updated: 'never'
     }
   }
 
   getDevices() {
     axios.get('/monitor').then((response) => {
-     this.setState({ devices: response.data })
+     this.setState({ devices: response.data, "updated": moment().format("h:mmA") })
     }).catch((error) => {
       console.error(error);
     });
@@ -50,12 +51,21 @@ class MonitorApp extends React.Component {
 
   componentDidMount() {
     this.getDevices();
+    setInterval(() => this.getDevices(), 500);
   }
 
   render() {
     return (
       <div className="devices">
-        <h2>Devices</h2>
+        <div style={{display: "flex", alignItems: "center"}}>
+          <div style={{textAlign: "left", flexGrow: 1}}>
+            <h2>Devices</h2>
+          </div>
+          <div style={{textAlign: "right", flexGrow: 1}}>
+            <h6 className="status">Last updated at {this.state.updated}</h6>
+          </div>
+        </div>
+        
         <div className="row">
           {this.state.devices.map((device, i) => {
             return (
