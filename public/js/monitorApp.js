@@ -79,7 +79,8 @@ class Device extends React.Component {
     let target = document.getElementById(`map-${this.props.device_id}`);
     this.map = new google.maps.Map(target, {
       center: { lat: this.props.last_lat, lng: this.props.last_long },
-      zoom: 12
+      zoom: 12,
+      draggable: false
     });
 
     var latLng = new google.maps.LatLng(this.props.last_lat, this.props.last_long);
