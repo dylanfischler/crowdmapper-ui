@@ -49,7 +49,7 @@ class MonitorApp extends React.Component {
 
 class Device extends React.Component {
   isOnline(milli) {
-    return (milli < 3600000 * 5);
+    return (milli < 3600000);
   }
 
   componentDidMount() {
