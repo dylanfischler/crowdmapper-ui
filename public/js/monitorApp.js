@@ -59,7 +59,7 @@ class MonitorApp extends React.Component {
         <div className="row">
           {this.state.devices.map((device, i) => {
             return (
-              <div key={i} className="col-md-4">
+              <div key={i} className="col-xl-4 col-lg-6">
                 <Device {...device} />
               </div>
             )
@@ -75,18 +75,38 @@ class Device extends React.Component {
     return (milli < 3600000 * 5);
   }
 
+  componentDidMount() {
+    let target = document.getElementById(`map-${this.props.device_id}`);
+    this.map = new google.maps.Map(target, {
+      center: { lat: this.props.last_lat, lng: this.props.last_long },
+      zoom: 12
+    });
+
+    var latLng = new google.maps.LatLng(this.props.last_lat, this.props.last_long);
+    var marker = new google.maps.Marker({
+      position: latLng,
+      icon: '/assets/pin.png',
+      map: this.map
+    });
+  }
+
   render() {
     let diff = moment().diff(moment(this.props.last_seen))
     let duration = moment.duration(diff);
-    let online = this.isOnline(duration.asMilliseconds())
+    let online = this.isOnline(duration.asMilliseconds());
 
     return (
-      <div className="card card-block device">
-        <h4 className="card-title">
-          <span className={`status ${online ? 'online':'offline'}`}></span>
-          {this.props.device_name}
-        </h4>
-        <h6 className="last-seen">Last seen {duration.humanize()} ago</h6>
+      <div className="card device">
+        <div className="card-header">
+          <div className="map" id={`map-${this.props.device_id}`}></div>
+        </div>
+        <div className="card-block">
+          <h4 className="card-title">
+            <span className={`status ${online ? 'online':'offline'}`}></span>
+            {this.props.device_name}
+          </h4>
+          <h6 className="last-seen">Last seen {duration.humanize()} ago</h6>
+        </div>
       </div>
     )
   }
