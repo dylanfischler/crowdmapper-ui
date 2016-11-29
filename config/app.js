@@ -38,7 +38,7 @@ const configure = (app) => {
       values.push(body.last_lat);
       values.push(body.last_long);
 
-      let qry = "INSERT INTO devices (device_id, device_type, device_name, last_lat, last_long, last_seen) VALUES (?,?,?,?,?,?,?,?)\
+      let qry = "INSERT INTO devices (device_id, device_type, device_name, last_lat, last_long, last_seen) VALUES (?,?,?,?,?,?)\
                 ON DUPLICATE KEY UPDATE last_seen=?, last_lat=?, last_long=?;"
 
       database.query(qry, values).then((resp) => {
