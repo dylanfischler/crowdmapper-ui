@@ -24,7 +24,7 @@ const configure = (app) => {
     console.log(`${req.body.device_name} checking in at ${now}`);
 
     let body = req.body;
-    let reqArgs = ["device_id", "device_type", "device_name"];
+    let reqArgs = ["device_id", "device_type", "device_name", "last_lat", "last_long"];
     let values = [];
 
     reqArgs.forEach((arg) => {
@@ -36,7 +36,7 @@ const configure = (app) => {
       values.push(now);
       values.push(now);
 
-      let qry = "INSERT INTO devices (device_id, device_type, device_name, last_seen) VALUES (?,?,?,?)\
+      let qry = "INSERT INTO devices (device_id, device_type, device_name, last_lat, last_long, last_seen) VALUES (?,?,?,?,?,?)\
                 ON DUPLICATE KEY UPDATE last_seen=?;"
 
       database.query(qry, values).then((resp) => {
@@ -45,6 +45,14 @@ const configure = (app) => {
         console.error(err);
       })
     }
+  });
+
+  app.get('/monitor', (req, res) => {
+    database.query("SELECT * FROM devices").then((rows) => {
+      res.status(200).send(rows);
+    }).catch((err) => {
+      res.status(500).send(console.error(err))
+    })
   });
 
 

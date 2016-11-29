@@ -10,24 +10,6 @@
       center: { lat: 42.390238, lng: -72.524853 },
       zoom: 3
     });
-
-    // return new Promise(function(resolve, reject) {
-    //   if (navigator.geolocation) {
-    //     navigator.geolocation.getCurrentPosition(function(position){
-    //       initMap({
-    //         center: { lat: position.coords.latitude, lng: position.coords.longitude },
-    //         zoom: 3
-    //       });
-    //       resolve();
-    //     });
-    //   } else {
-    //     initMap({
-    //       center: { lat: -34.397, lng: 150.644 },
-    //       zoom: 3
-    //     });
-    //     resolve();
-    //   }
-    // });
   }
 
   CrowdMapper.prototype.getLocations = function() {
