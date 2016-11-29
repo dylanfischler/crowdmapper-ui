@@ -20,7 +20,9 @@ const configure = (app) => {
   });
 
   app.post('/monitor/poll', (req, res) => {
-    console.log(req.body);
+    var now = (new Date()).getTime();
+    console.log(`${device_name} checking in at ${now}`);
+
     let body = req.body;
     let reqArgs = ["device_id", "device_type", "device_name"];
     let values = [];
@@ -30,8 +32,7 @@ const configure = (app) => {
     });
 
     if(values.length !== reqArgs.length) return res.sendStatus(400);
-    else {
-      var now = (new Date()).getTime();
+    else {  
       values.push(now);
       values.push(now);
 
