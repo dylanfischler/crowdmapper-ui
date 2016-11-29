@@ -21,7 +21,7 @@ const configure = (app) => {
 
   app.post('/monitor/poll', (req, res) => {
     var now = (new Date()).getTime();
-    console.log(`${device_name} checking in at ${now}`);
+    console.log(`${req.body.device_name} checking in at ${now}`);
 
     let body = req.body;
     let reqArgs = ["device_id", "device_type", "device_name"];
