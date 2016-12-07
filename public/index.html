@@ -36,9 +36,9 @@
       
     crowdMapper.getLocations().then(function() {
       console.log("Locations Fetched");
-      // crowdMapper.generateHeatMap();
-      crowdMapper.placeLocationMarkers();
+      // crowdMapper.placeLocationMarkers();
     }).catch(function(err) { console.log(err); });
+    crowdMapper.getClusters()
   </script>
 </body>
 </html>

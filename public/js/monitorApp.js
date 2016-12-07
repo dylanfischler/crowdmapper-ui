@@ -63,6 +63,8 @@ class Device extends React.Component {
     var marker = new google.maps.Marker({
       position: latLng,
       icon: '/assets/pin.png',
+      scaledSize: new google.maps.Size(10, 10),
+      optimized: false,
       map: this.map
     });
   }

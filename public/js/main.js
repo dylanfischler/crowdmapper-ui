@@ -2,6 +2,7 @@
   function CrowdMapper() {
     this.map = null;
     this.locations = null;
+    this.clusters = null;
     this.mapBounds = new google.maps.LatLngBounds();
   }
 
@@ -18,6 +19,21 @@
     return new Promise(function(resolve, reject) {
       axios.get('/api/location').then(function(response) {
         self.locations = response.data;
+        self.placeLocationMarkers();
+        resolve();
+      }).catch(function(error) {
+        reject(error);
+      });
+    });
+  }
+
+  CrowdMapper.prototype.getClusters = function() {
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      axios.get('/api/clusters').then(function(response) {
+        self.clusters = response.data;
+        self.drawClusters();
         resolve();
       }).catch(function(error) {
         reject(error);
@@ -44,6 +60,10 @@
     });
 
     self.map.fitBounds(self.mapBounds);
+  }
+
+  CrowdMapper.prototype.drawClusters = function() {
+    console.log("Drawing clusters", this.clusters);
   }
 
   CrowdMapper.prototype.generateHeatMap = function() {

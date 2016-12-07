@@ -4,6 +4,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('../config.json');
 const Database = require('../lib/database');
+const fs = require('fs');
+
+const CLUSTER_FILE_PATH='/Users/dylanfischler/Documents/projects/crowdmapper/crowdmapper-clustering/clusters';
 
 const configure = (app) => {
   let database = new Database(config);
@@ -16,6 +19,13 @@ const configure = (app) => {
       res.send(rows);
     }).catch((err) => {
       console.error(err);
+    })
+  });
+
+  app.get('/api/clusters', (req, res) => {
+    fs.readFile(CLUSTER_FILE_PATH, (err, contents) => {
+      if(err) throw err;
+      else res.send(contents);
     })
   });
 
