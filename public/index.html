@@ -34,10 +34,11 @@
     var crowdMapper = new CrowdMapper();
     crowdMapper.intiateBasicMap(document.getElementById('basic-map'))
       
-    crowdMapper.getLocations().then(function() {
-      console.log("Locations Fetched");
-      // crowdMapper.placeLocationMarkers();
-    }).catch(function(err) { console.log(err); });
+    // crowdMapper.getLocations().then(function() {
+    //   console.log("Locations Fetched");
+    //   // crowdMapper.placeLocationMarkers();
+    // }).catch(function(err) { console.log(err); });
+    
     crowdMapper.getClusters()
   </script>
 </body>

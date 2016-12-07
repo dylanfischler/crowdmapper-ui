@@ -5,11 +5,13 @@ const bodyParser = require('body-parser');
 const config = require('../config.json');
 const Database = require('../lib/database');
 const fs = require('fs');
+const AWS = require('aws-sdk'); 
 
-const CLUSTER_FILE_PATH='/Users/Zach/Documents/2016FallSemester/390MB/finalproject/crowdmapper-clustering/clusters';
+// const CLUSTER_FILE_PATH='/Users/Zach/Documents/2016FallSemester/390MB/finalproject/crowdmapper-clustering/clusters';
 
 const configure = (app) => {
   let database = new Database(config);
+  let s3 = new AWS.S3();
 
   app.set('view engine', 'ejs');
   app.use(bodyParser.json());
@@ -23,10 +25,18 @@ const configure = (app) => {
   });
 
   app.get('/api/clusters', (req, res) => {
-    fs.readFile(CLUSTER_FILE_PATH, (err, contents) => {
-      if(err) throw err;
-      else res.send(contents);
-    })
+    var params = { Bucket: 'crowdmapper', Key: 'clusters' };
+    s3.getObject(params, (err, data) => {
+      if(err) return res.sendStatus(500);
+      else {
+        res.send(data.Body.toString());
+      }
+    });
+
+    // fs.readFile(CLUSTER_FILE_PATH, (err, contents) => {
+    //   if(err) throw err;
+    //   else res.send(contents);
+    // })
   });
 
   app.post('/monitor/poll', (req, res) => {
