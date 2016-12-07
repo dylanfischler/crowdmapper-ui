@@ -6,7 +6,7 @@ const config = require('../config.json');
 const Database = require('../lib/database');
 const fs = require('fs');
 
-const CLUSTER_FILE_PATH='/Users/dylanfischler/Documents/projects/crowdmapper/crowdmapper-clustering/clusters';
+const CLUSTER_FILE_PATH='/Users/Zach/Documents/2016FallSemester/390MB/finalproject/crowdmapper-clustering/clusters';
 
 const configure = (app) => {
   let database = new Database(config);
