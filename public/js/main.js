@@ -64,6 +64,33 @@
   }
 
   CrowdMapper.prototype.drawClusters = function() {
+    var self = this;
+
+    for(var cluster in self.clusters) {
+      var color = getRandomColor()
+      var points = self.clusters[cluster].points;
+      points.forEach(function(location) {
+        var latLng = new google.maps.LatLng(location[0], location[1]);
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: self.map,
+          // label: cluster,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            strokeColor: color,
+            fillColor: color,
+            fillOpacity: 1,
+            scale: 5
+          }
+        });
+        self.mapBounds.extend(marker.position);
+      });
+    }
+
+    self.map.fitBounds(self.mapBounds);
+  }
+
+  CrowdMapper.prototype.drawClusterHulls = function() {
     console.log("Drawing clusters", this.clusters);
     // TODO: do this
 
