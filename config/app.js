@@ -6,8 +6,9 @@ const config = require('../config.json');
 const Database = require('../lib/database');
 const fs = require('fs');
 const AWS = require('aws-sdk'); 
+const path = require('path');
 
-// const CLUSTER_FILE_PATH='/Users/Zach/Documents/2016FallSemester/390MB/finalproject/crowdmapper-clustering/clusters';
+const CLUSTER_FILE_PATH='../data/clusters';
 
 const configure = (app) => {
   let database = new Database(config);
@@ -27,16 +28,20 @@ const configure = (app) => {
   app.get('/api/clusters', (req, res) => {
     var params = { Bucket: 'crowdmapper', Key: 'clusters' };
     s3.getObject(params, (err, data) => {
-      if(err) return res.sendStatus(500);
+      if(err) {
+        console.error('S3 Error');
+        console.log("Falling back to local historical copy");
+        fs.readFile(path.resolve(__dirname, CLUSTER_FILE_PATH), (err, contents) => {
+          if(err) return res.status(500).send(err);
+          else return res.send(contents);
+        });
+      }
       else {
         res.send(data.Body.toString());
       }
     });
 
-    // fs.readFile(CLUSTER_FILE_PATH, (err, contents) => {
-    //   if(err) throw err;
-    //   else res.send(contents);
-    // })
+    
   });
 
   app.post('/monitor/poll', (req, res) => {

@@ -67,14 +67,14 @@
     var self = this;
 
     for(var cluster in self.clusters) {
-      var color = getRandomColor()
-      var points = self.clusters[cluster].points;
+      var color = getRandomColor();
+      var points = self.clusters[cluster].hull;
       points.forEach(function(location) {
         var latLng = new google.maps.LatLng(location[0], location[1]);
         var marker = new google.maps.Marker({
           position: latLng,
           map: self.map,
-          // label: cluster,
+          label: cluster,
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             strokeColor: color,
