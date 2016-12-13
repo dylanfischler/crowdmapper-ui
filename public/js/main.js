@@ -5,6 +5,7 @@
     this.clusters = null;
     this.markers = [];
     this.mapBounds = new google.maps.LatLngBounds();
+    this.curves = null;
   }
 
   CrowdMapper.prototype.intiateBasicMap = function(targetElement) {
@@ -22,6 +23,20 @@
         self.locations = response.data;
         console.log(self.locations);
         // self.placeLocationMarkers(self.locations);
+        resolve();
+      }).catch(function(error) {
+        reject(error);
+      });
+    });
+  }
+
+  CrowdMapper.prototype.getCurves = function() {
+    var self = this;
+
+    return new Promise(function(resolve, reject) {
+      axios.get('/api/curves').then(function(response) {
+        self.curves = response.data;
+        debugger;
         resolve();
       }).catch(function(error) {
         reject(error);

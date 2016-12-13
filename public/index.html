@@ -38,7 +38,8 @@
   <script type="text/javascript" src="/js/main.js"></script>
   <script type="text/javascript">
     var crowdMapper = new CrowdMapper();
-    crowdMapper.intiateBasicMap(document.getElementById('basic-map'))
+    crowdMapper.intiateBasicMap(document.getElementById('basic-map'));
+    crowdMapper.getCurves();
       
     // crowdMapper.getLocations().then(function() {
     //   console.log("Locations Fetched");
