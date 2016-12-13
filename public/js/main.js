@@ -20,7 +20,6 @@
       axios.get('/api/location').then(function(response) {
         self.locations = response.data;
         console.log(self.locations);
-        // self.placeLocationMarkers(self.locations);
         resolve();
       }).catch(function(error) {
         reject(error);
@@ -42,14 +41,19 @@
     });
   }
 
-  CrowdMapper.prototype.placeLocationMarkers = function(locations) {
+  CrowdMapper.prototype.placeLocationMarkers = function(locations, color) {
     console.log("Placing location markers");
     var self = this;
-    locations.forEach(function(location) {
+    locations.forEach(function(location) {   
       var latLng = new google.maps.LatLng(location.lat, location.long);
       var marker = new google.maps.Marker({
         position: latLng,
-        map: self.map
+        map: self.map,
+        icon: {
+          path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+          strokeColor: color,
+          scale: 3
+        }
       });
       var markerWindow = new google.maps.InfoWindow({
         content: "Latitude: " + location.lat + " Longitude: " + location.long
@@ -59,18 +63,11 @@
       });
       self.mapBounds.extend(marker.position);
     });
-
     self.map.fitBounds(self.mapBounds);
   }
 
   CrowdMapper.prototype.drawClusters = function() {
     console.log("Drawing clusters", this.clusters);
-    // TODO: do this
-
-    // for each cluster
-      // draw hull polygon
-      // call self.placeLocationMarkers on hull
-    
     for(var cluster in this.clusters) {
       var currentHull = this.clusters[cluster].hull;
       var clusterCoords = [];
@@ -82,19 +79,21 @@
       var color = getRandomColor();
       var newCluster = new google.maps.Polygon({
           paths: clusterCoords,
-          strokeColor: color,
+          strokeColor: "white",
           strokeOpacity: 0.8,
           strokeWeight: 2,
           fillColor: color,
           fillOpacity: 0.35
         });
-      console.log(color);
-      console.log(getRandomColor());
+      var points = this.clusters[cluster].points;
+      for(var point in points){
+        locations.push({lat: points[point][0], long: points[point][1]});  
+      }
+      this.placeLocationMarkers(locations, color);
       newCluster.setMap(this.map);
-      this.placeLocationMarkers(locations);
     }
-    
   }
+
   function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -102,7 +101,7 @@
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
-}
+  }
 
   CrowdMapper.prototype.generateHeatMap = function() {
     var self = this;
