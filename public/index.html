@@ -22,6 +22,12 @@
   </nav>
 
   <div id="main-container" class="container">
+    <div>
+      <select id="cluster-select">
+        <option selected disabled>Loading...</option>
+      </select>
+      <button onclick="crowdMapper.renderCluster(document.getElementById('cluster-select').value)">View Cluster</button>
+    </div>
     <div id="basic-map"></div>
   </div>
 

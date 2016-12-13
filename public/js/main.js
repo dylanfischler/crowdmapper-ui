@@ -3,6 +3,7 @@
     this.map = null;
     this.locations = null;
     this.clusters = null;
+    this.markers = [];
     this.mapBounds = new google.maps.LatLngBounds();
   }
 
@@ -34,11 +35,48 @@
     return new Promise(function(resolve, reject) {
       axios.get('/api/clusters').then(function(response) {
         self.clusters = response.data;
-        self.drawClusters();
+        self.applyClusters();
+        // self.drawClusters();
         resolve();
       }).catch(function(error) {
         reject(error);
       });
+    });
+  }
+
+  CrowdMapper.prototype.applyClusters = function() {
+    var clusterSelect = document.getElementById('cluster-select');
+    clusterSelect.innerHTML = '<option selected disabled>Select a cluster</option>';
+
+    for(var cluster in this.clusters) {
+      var opt = document.createElement('option');
+      opt.text = cluster;
+      opt.value = cluster;
+      clusterSelect.appendChild(opt);
+    }
+  }
+
+  CrowdMapper.prototype.renderCluster = function(clusterKey) {
+    var self = this;
+    self.clearMarkers();
+    self.mapBounds = new google.maps.LatLngBounds();
+
+    self.clusters[clusterKey].points.forEach(function(location) {
+      var latLng = new google.maps.LatLng(location[0], location[1]);
+      var marker = new google.maps.Marker({
+        position: latLng,
+        map: self.map
+      });
+      self.markers.push(marker)
+      self.mapBounds.extend(marker.position);
+    });
+
+    self.map.fitBounds(self.mapBounds);
+  }
+
+  CrowdMapper.prototype.clearMarkers = function() {
+    this.markers.forEach(function(marker) {
+      marker.setMap(null);
     });
   }
 

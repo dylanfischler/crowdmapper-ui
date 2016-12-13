@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('../config.json');
 const Database = require('../lib/database');
+const curvesparse = require('../lib/curvesparse');
 const fs = require('fs');
 const AWS = require('aws-sdk'); 
 const path = require('path');
@@ -40,8 +41,19 @@ const configure = (app) => {
         res.send(data.Body.toString());
       }
     });
+  });
 
-    
+  app.get('/api/curves', (req, res) => {
+    var params = { Bucket: 'crowdmapper', Key: 'curves.csv' };
+    s3.getObject(params, (err, data) => {
+      if(err) {
+        console.error('S3 Error');
+        return res.send(err);
+      }
+      else {
+        res.send(curvesparse(data.Body.toString()));
+      }
+    });
   });
 
   app.post('/monitor/poll', (req, res) => {
