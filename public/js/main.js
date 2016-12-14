@@ -44,65 +44,24 @@
     });
   }
 
-  function calcDistance(locationOne, locationTwo){
-    var radius = 6378137;   // approximate Earth radius, *in meters*
-        var deltaLat = locationOne[0] - locationTwo[0];
-        var deltaLon = locationOne[1] - locationTwo[1];
-        var angle = 2 * Math.asin( Math.sqrt(
-        Math.pow(Math.sin(deltaLat/2), 2) + 
-        Math.cos(locationTwo[0]) * Math.cos(locationOne[0]) * 
-        Math.pow(Math.sin(deltaLon/2), 2) ) );
-        return radius * angle;
-  }
-
   CrowdMapper.prototype.drawCurves = function() {
     var self = this;
     self.clearMarkers();
     self.mapBounds = new google.maps.LatLngBounds();
+
     for(curve in self.curves){
       var path = [];
       var lastLat = 0;
       var lastLng = 0;
-      var lastPoint = [0,0];
-      self.curves[curve].sort(function(locationOne, locationTwo){
-        // if((locationOne[0] - locationTwo[0]) > 0){
-        //   if( (locationOne[1] - locationTwo[1]) > 0 ){
-        //     return 1;
-        //   }
-        // }
-        // else{
-        //   if( (locationOne[1] - locationTwo[1]) < 0 ){
-        //     return -1;
-        //   }
-        // }
-        // return -(locationOne[0] - locationTwo[0]) + (locationOne[1] - locationTwo[1]);
-        var aDist = calcDistance(locationOne, lastPoint) ;
-        var bDist = calcDistance(locationTwo, lastPoint) ;
-        // console.log("aDist: "+aDist+" , bDist: "+bDist);
-        if(aDist - bDist > 0.0){
-          lastPoint = locationTwo;
-          return 1;
-        }
-        else{
-          lastPoint = locationOne;
-          return -1;
-        }
-        return 0;
-      });
       self.curves[curve].forEach(function(location) {
         if(location[0] != null){
-          // if(Math.abs(lastLat - location[0]) > 0.00001 && Math.abs(lastLng - location[1]) > 0.00001){
+          if(Math.abs(lastLat - location[0]) > 0.00001 && Math.abs(lastLng - location[1]) > 0.00001){
             var latLng = new google.maps.LatLng(location[0], location[1]);
             path.push(latLng);
-            // var marker = new google.maps.Marker({
-            //   position: latLng,
-            //   map: self.map
-            // });
-            // self.markers.push(marker)
             self.mapBounds.extend(latLng);
             lastLat = location[0];
             lastLng = location[1];
-          // }
+          }
         }
       });
 
@@ -111,9 +70,9 @@
           geodesic: true,
           strokeColor: getRandomColor(),
           strokeOpacity: 1.0,
-          strokeWeight: 2,
+          strokeWeight: 4,
           fillOpacity: 0.0
-        });
+      });
       newPath.setMap(self.map);
     }
 
@@ -151,11 +110,17 @@
     var self = this;
     self.clearMarkers();
     self.mapBounds = new google.maps.LatLngBounds();
-
+    var icon = {
+      url: "https://storage.googleapis.com/support-kms-prod/SNP_2752125_en_v0",
+      scaledSize: new google.maps.Size(7.5, 7.5), // scaled size
+      origin: new google.maps.Point(0,0), // origin
+      anchor: new google.maps.Point(0, 0) // anchor
+    };
     self.clusters[clusterKey].points.forEach(function(location) {
       var latLng = new google.maps.LatLng(location[0], location[1]);
       var marker = new google.maps.Marker({
         position: latLng,
+        icon: icon,
         map: self.map
       });
       self.markers.push(marker)
