@@ -65,17 +65,29 @@
       var lastLng = 0;
       var lastPoint = [0,0];
       self.curves[curve].sort(function(locationOne, locationTwo){
-        if((locationOne[0] - locationTwo[0]) > 0){
-          if( (locationOne[1] - locationTwo[1]) > 0 ){
-            return 1;
-          }
+        // if((locationOne[0] - locationTwo[0]) > 0){
+        //   if( (locationOne[1] - locationTwo[1]) > 0 ){
+        //     return 1;
+        //   }
+        // }
+        // else{
+        //   if( (locationOne[1] - locationTwo[1]) < 0 ){
+        //     return -1;
+        //   }
+        // }
+        // return -(locationOne[0] - locationTwo[0]) + (locationOne[1] - locationTwo[1]);
+        var aDist = calcDistance(locationOne, lastPoint) ;
+        var bDist = calcDistance(locationTwo, lastPoint) ;
+        // console.log("aDist: "+aDist+" , bDist: "+bDist);
+        if(aDist - bDist > 0.0){
+          lastPoint = locationTwo;
+          return 1;
         }
         else{
-          if( (locationOne[1] - locationTwo[1]) < 0 ){
-            return -1;
-          }
+          lastPoint = locationOne;
+          return -1;
         }
-        return -(locationOne[0] - locationTwo[0]) + (locationOne[1] - locationTwo[1]);
+        return 0;
       });
       self.curves[curve].forEach(function(location) {
         if(location[0] != null){
