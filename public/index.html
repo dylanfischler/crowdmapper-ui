@@ -22,11 +22,21 @@
   </nav>
 
   <div id="main-container" class="container">
-    <div>
-      <select id="cluster-select">
-        <option selected disabled>Loading...</option>
-      </select>
-      <button onclick="crowdMapper.renderCluster(document.getElementById('cluster-select').value)">View Cluster</button>
+    <div class="row">
+      <div class="col-md-6 pull-left">
+        <h5>CrowdMapper Data Exploration System</h5>
+      </div>
+      <div class="col-md-6 pull-right">
+        <form>
+          <div class="form-group">
+            <select id="cluster-select">
+              <option selected disabled>Loading...</option>
+            </select>
+            <button type="button" class="btn btn-primary" onclick="crowdMapper.renderCluster(document.getElementById('cluster-select').value)">View Cluster</button>
+          </div>
+        </form>
+      </div>
+      
     </div>
     <div id="basic-map"></div>
   </div>
